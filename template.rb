@@ -118,8 +118,8 @@ end
 
 def dry_out_database_config
   inside 'config' do
-  remove_file 'database.yml'
-  create_file 'database.yml' do <<-EOF
+    remove_file 'database.yml'
+    create_file 'database.yml' do <<-EOF
 default: &default
   adapter:  postgresql
   encoding: unicode
@@ -161,6 +161,7 @@ production:
   <<: *default
   database: #{app_name}_production
 EOF
+    end
   end
 end
 

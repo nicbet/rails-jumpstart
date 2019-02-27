@@ -119,48 +119,49 @@ end
 def dry_out_database_config
   inside 'config' do
     remove_file 'database.yml'
-    create_file 'database.yml' do <<-EOF
-default: &default
-  adapter:  postgresql
-  encoding: unicode
-  pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: <%= ENV.fetch("DB_USERNAME") { "postgres" } %>
-  password: <%= ENV.fetch("DB_PASSWORD") { "postgres" } %>
-  host:     <%= ENV.fetch("DB_HOST") { "localhost" } %>
-  port:     <%= ENV.fetch("DB_PORT") { 5432 } %>
+    create_file 'database.yml' do
+      <<-EOF
+        default: &default
+          adapter:  postgresql
+          encoding: unicode
+          pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+          username: <%= ENV.fetch("DB_USERNAME") { "postgres" } %>
+          password: <%= ENV.fetch("DB_PASSWORD") { "postgres" } %>
+          host:     <%= ENV.fetch("DB_HOST") { "localhost" } %>
+          port:     <%= ENV.fetch("DB_PORT") { 5432 } %>
 
 
-development:
-  <<: *default
-  database: #{app_name}_development
+        development:
+          <<: *default
+          database: #{app_name}_development
 
-  # Minimum log levels, in increasing order:
-  #   debug5, debug4, debug3, debug2, debug1,
-  #   log, notice, warning, error, fatal, and panic
-  # Defaults to warning.
-  #min_messages: notice
+          # Minimum log levels, in increasing order:
+          #   debug5, debug4, debug3, debug2, debug1,
+          #   log, notice, warning, error, fatal, and panic
+          # Defaults to warning.
+          #min_messages: notice
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: #{app_name}_test
+        # Warning: The database defined as "test" will be erased and
+        # re-generated from your development database when you run "rake".
+        # Do not set this db to the same as development or production.
+        test:
+          <<: *default
+          database: #{app_name}_test
 
-# On Heroku and other platform providers, you may have a full connection URL
-# available as an environment variable. For example:
-#
-#   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
-#
-# You can use this database configuration with:
-#
-#   production:
-#     url: <%= ENV['DATABASE_URL'] %>
-#
-production:
-  <<: *default
-  database: #{app_name}_production
-EOF
+        # On Heroku and other platform providers, you may have a full connection URL
+        # available as an environment variable. For example:
+        #
+        #   DATABASE_URL="postgres://myuser:mypass@localhost/somedatabase"
+        #
+        # You can use this database configuration with:
+        #
+        #   production:
+        #     url: <%= ENV['DATABASE_URL'] %>
+        #
+        production:
+          <<: *default
+          database: #{app_name}_production
+      EOF
     end
   end
 end
